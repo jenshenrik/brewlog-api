@@ -34,5 +34,11 @@ namespace Brewlog.Repositories
             var index = _recipes.FindIndex(existingRecipe => existingRecipe.Id == recipe.Id);
             _recipes[index] = recipe;
         }
+
+        public void DeleteRecipe(Guid id)
+        {
+            var index = _recipes.FindIndex(existingRecipe => existingRecipe.Id == id);
+            _recipes.RemoveAt(index);
+        }
     }
 }

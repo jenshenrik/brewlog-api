@@ -72,5 +72,19 @@ namespace Brewlog.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete("{id}")]
+        public ActionResult DeleteRecipe(Guid id)
+        {
+            var recipe = _recipeRepository.GetRecipe(id);
+
+            if (recipe is null)
+            {
+                return NotFound();
+            }
+
+            _recipeRepository.DeleteRecipe(id);
+            return NoContent();
+        }
     }
 }
