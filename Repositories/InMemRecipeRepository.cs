@@ -5,7 +5,7 @@ using Brewlog.Entities;
 
 namespace Brewlog.Repositories
 {
-    public class InMemRecipeRepository
+    public class InMemRecipeRepository : IRecipeRepository
     {
         private readonly List<Recipe> _recipes = new()
         {

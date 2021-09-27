@@ -10,24 +10,24 @@ namespace Brewlog.Controllers
     [Route("[controller]")]
     public class RecipesController : ControllerBase
     {
-        private readonly InMemRecipeRepository repository;
+        private readonly IRecipeRepository _recipeRepository;
 
-        public RecipesController()
+        public RecipesController(IRecipeRepository recipeRepository)
         {
-            repository = new InMemRecipeRepository();
+            _recipeRepository = recipeRepository;
         }
 
         [HttpGet]
         public ActionResult<IEnumerable<Recipe>> Recipes()
         {
-            var recipes = repository.GetRecipes();
+            var recipes = _recipeRepository.GetRecipes();
             return Ok(recipes);
         }
 
         [HttpGet("{id}")]
         public ActionResult<Recipe> GetRecipe(Guid id)
         {
-            var recipe = repository.GetRecipe(id);
+            var recipe = _recipeRepository.GetRecipe(id);
             if (recipe is null)
             {
                 return NotFound();
