@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Brewlog.DTOs;
 using Brewlog.Entities;
 using Brewlog.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -18,21 +20,21 @@ namespace Brewlog.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Recipe>> Recipes()
+        public ActionResult<IEnumerable<RecipeDTO>> Recipes()
         {
-            var recipes = _recipeRepository.GetRecipes();
+            var recipes = _recipeRepository.GetRecipes().Select(recipe => recipe.AsDTO());
             return Ok(recipes);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Recipe> GetRecipe(Guid id)
+        public ActionResult<RecipeDTO> GetRecipe(Guid id)
         {
             var recipe = _recipeRepository.GetRecipe(id);
             if (recipe is null)
             {
                 return NotFound();
             }
-            return Ok(recipe);
+            return Ok(recipe.AsDTO());
         }
     }
 }
