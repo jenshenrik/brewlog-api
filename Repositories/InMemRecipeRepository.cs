@@ -23,5 +23,10 @@ namespace Brewlog.Repositories
         {
             return _recipes.FirstOrDefault(r => r.Id == id);
         }
+
+        public void CreateRecipe(Recipe recipe)
+        {
+            _recipes.Add(recipe);
+        }
     }
 }

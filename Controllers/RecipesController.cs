@@ -36,5 +36,21 @@ namespace Brewlog.Controllers
             }
             return Ok(recipe.AsDTO());
         }
+
+        [HttpPost]
+        public ActionResult<RecipeDTO> CreateRecipe(CreateRecipeDTO recipeDto)
+        {
+            Recipe recipe = new()
+            {
+                Id = Guid.NewGuid(),
+                Name = recipeDto.Name,
+                OriginalGravity = recipeDto.OriginalGravity,
+                CreatedDate = DateTimeOffset.UtcNow
+            };
+
+            _recipeRepository.CreateRecipe(recipe);
+
+            return CreatedAtAction(nameof(GetRecipe), new { id = recipe.Id }, recipe.AsDTO());
+        }
     }
 }
