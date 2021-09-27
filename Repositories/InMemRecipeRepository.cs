@@ -28,5 +28,11 @@ namespace Brewlog.Repositories
         {
             _recipes.Add(recipe);
         }
+
+        public void UpdateRecipe(Recipe recipe)
+        {
+            var index = _recipes.FindIndex(existingRecipe => existingRecipe.Id == recipe.Id);
+            _recipes[index] = recipe;
+        }
     }
 }

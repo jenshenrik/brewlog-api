@@ -9,5 +9,6 @@ namespace Brewlog.Repositories
         IEnumerable<Recipe> GetRecipes();
         Recipe GetRecipe(Guid id);
         void CreateRecipe(Recipe recipe);
+        void UpdateRecipe(Recipe recipe);
     }
 }

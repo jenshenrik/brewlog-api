@@ -52,5 +52,25 @@ namespace Brewlog.Controllers
 
             return CreatedAtAction(nameof(GetRecipe), new { id = recipe.Id }, recipe.AsDTO());
         }
+
+        [HttpPut("{id}")]
+        public ActionResult UpdateRecipe(Guid id, UpdateRecipeDTO recipeDto)
+        {
+            var existingRecipe = _recipeRepository.GetRecipe(id);
+
+            if (existingRecipe is null)
+            {
+                return NotFound();
+            }
+
+            Recipe updateRecipe = existingRecipe with {
+                Name = recipeDto.Name,
+                OriginalGravity = recipeDto.OriginalGravity
+            };
+
+            _recipeRepository.UpdateRecipe(updateRecipe);
+
+            return NoContent();
+        }
     }
 }
