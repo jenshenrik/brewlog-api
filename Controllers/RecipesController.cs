@@ -75,7 +75,18 @@ namespace Brewlog.Controllers
 
             Recipe updateRecipe = existingRecipe with {
                 Name = recipeDto.Name,
-                OriginalGravity = recipeDto.OriginalGravity
+                OriginalGravity = recipeDto.OriginalGravity,
+                FinalGravity = recipeDto.FinalGravity,
+                IBU = recipeDto.IBU,
+                EBC = recipeDto.EBC,
+                Yeast = recipeDto.Yeast,
+                Fermentables = recipeDto.Fermentables.Select(
+                    f => new Fermentable { Id = Guid.NewGuid(), Name = f.Name, WeightInGrams = f.WeightInGrams }
+                ),
+                HopAdditions = recipeDto.HopAdditions.Select(
+                    h => new HopAddition { Id = Guid.NewGuid(), Name = h.Name, WeightInGrams = h.WeightInGrams, MinutesInBoil = h.MinutesInBoil }
+                ),
+                CreatedDate = DateTimeOffset.UtcNow
             };
 
             _recipeRepository.UpdateRecipe(updateRecipe);
