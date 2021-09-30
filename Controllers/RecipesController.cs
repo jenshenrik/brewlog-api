@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Linq;
 using Brewlog.DTOs;
 using Brewlog.Entities;
@@ -20,16 +21,17 @@ namespace Brewlog.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<RecipeDTO>> Recipes()
+        public async Task<IEnumerable<RecipeDTO>> GetRecipesAsync()
         {
-            var recipes = _recipeRepository.GetRecipes().Select(recipe => recipe.AsDTO());
-            return Ok(recipes);
+            var recipes = (await _recipeRepository.GetRecipesAsync())
+                .Select(recipe => recipe.AsDTO());
+            return recipes;
         }
 
         [HttpGet("{id}")]
-        public ActionResult<RecipeDTO> GetRecipe(Guid id)
+        public async Task<ActionResult<RecipeDTO>> GetRecipeAsync(Guid id)
         {
-            var recipe = _recipeRepository.GetRecipe(id);
+            var recipe = await _recipeRepository.GetRecipeAsync(id);
             if (recipe is null)
             {
                 return NotFound();
@@ -38,7 +40,7 @@ namespace Brewlog.Controllers
         }
 
         [HttpPost]
-        public ActionResult<RecipeDTO> CreateRecipe(CreateRecipeDTO recipeDto)
+        public async Task<ActionResult<RecipeDTO>> CreateRecipeAsync(CreateRecipeDTO recipeDto)
         {
             Recipe recipe = new()
             {
@@ -58,15 +60,15 @@ namespace Brewlog.Controllers
                 CreatedDate = DateTimeOffset.UtcNow
             };
 
-            _recipeRepository.CreateRecipe(recipe);
+            await _recipeRepository.CreateRecipeAsync(recipe);
 
-            return CreatedAtAction(nameof(GetRecipe), new { id = recipe.Id }, recipe.AsDTO());
+            return CreatedAtAction(nameof(GetRecipeAsync), new { id = recipe.Id }, recipe.AsDTO());
         }
 
         [HttpPut("{id}")]
-        public ActionResult UpdateRecipe(Guid id, UpdateRecipeDTO recipeDto)
+        public async Task<ActionResult> UpdateRecipeAsync(Guid id, UpdateRecipeDTO recipeDto)
         {
-            var existingRecipe = _recipeRepository.GetRecipe(id);
+            var existingRecipe = await _recipeRepository.GetRecipeAsync(id);
 
             if (existingRecipe is null)
             {
@@ -89,22 +91,22 @@ namespace Brewlog.Controllers
                 CreatedDate = DateTimeOffset.UtcNow
             };
 
-            _recipeRepository.UpdateRecipe(updateRecipe);
+            await _recipeRepository.UpdateRecipeAsync(updateRecipe);
 
             return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public ActionResult DeleteRecipe(Guid id)
+        public async Task<ActionResult> DeleteRecipe(Guid id)
         {
-            var recipe = _recipeRepository.GetRecipe(id);
+            var recipe = await _recipeRepository.GetRecipeAsync(id);
 
             if (recipe is null)
             {
                 return NotFound();
             }
 
-            _recipeRepository.DeleteRecipe(id);
+            await _recipeRepository.DeleteRecipeAsync(id);
             return NoContent();
         }
     }
