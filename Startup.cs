@@ -46,7 +46,10 @@ namespace Brewlog
             // services.AddSingleton<IRecipeRepository, MongoDbRecipeRepository>();
             services.AddSingleton<IRecipeRepository, InMemRecipeRepository>();
 
-            services.AddControllers();
+            services.AddControllers(options =>
+            {
+                options.SuppressAsyncSuffixInActionNames = false;
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "brewlog_api", Version = "v1" });
