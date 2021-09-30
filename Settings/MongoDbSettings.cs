@@ -6,11 +6,11 @@ namespace Brewlog.Settings
         public int Port { get; set; }
 
         public string ConnectionString 
-        {
-            get 
+        { 
+            get
             {
                 return $"mongodb://{Host}:{Port}";
-            }
+            } 
         }
     }
 }

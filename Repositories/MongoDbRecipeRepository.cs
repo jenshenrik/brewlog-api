@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Brewlog.Entities;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -8,42 +9,44 @@ namespace Brewlog.Repositories
 {
     public class MongoDbRecipeRepository : IRecipeRepository
     {
-        private const string databaseName = "brewlog";
+        private const string databaseName = "brewlogdb";
         private const string collectionName = "recipes";
-        public readonly IMongoCollection<Recipe> recipesCollection;
-        public readonly FilterDefinitionBuilder<Recipe> filterBuilder = Builders<Recipe>.Filter;
-        public MongoDbRecipeRepository(IMongoClient client)
+
+        private readonly IMongoCollection<Recipe> recipesCollection;
+        private readonly FilterDefinitionBuilder<Recipe> filterBuilder = Builders<Recipe>.Filter;
+
+        public MongoDbRecipeRepository(IMongoClient mongoClient)
         {
-            IMongoDatabase database = client.GetDatabase(databaseName);
+            IMongoDatabase database = mongoClient.GetDatabase(databaseName);
             recipesCollection = database.GetCollection<Recipe>(collectionName);
         }
 
-        public void CreateRecipe(Recipe recipe)
+        public async Task<IEnumerable<Recipe>> GetRecipesAsync()
         {
-            recipesCollection.InsertOne(recipe);
+            return await recipesCollection.Find(new BsonDocument()).ToListAsync();
         }
 
-        public void DeleteRecipe(Guid id)
-        {
-            var filter = filterBuilder.Eq(r => r.Id, id);
-            recipesCollection.DeleteOne(filter);
-        }
-
-        public Recipe GetRecipe(Guid id)
+        public async Task<Recipe> GetRecipeAsync(Guid id)
         {
             var filter = filterBuilder.Eq(r => r.Id, id);
-            return recipesCollection.Find(filter).SingleOrDefault();
+            return await recipesCollection.Find(filter).SingleOrDefaultAsync();
         }
 
-        public IEnumerable<Recipe> GetRecipes()
+        public async Task CreateRecipeAsync(Recipe recipe)
         {
-            return recipesCollection.Find(new BsonDocument()).ToList();
+            await recipesCollection.InsertOneAsync(recipe);
         }
 
-        public void UpdateRecipe(Recipe recipe)
+        public async Task UpdateRecipeAsync(Recipe recipe)
         {
             var filter = filterBuilder.Eq(existingRecipe => existingRecipe.Id, recipe.Id);
-            recipesCollection.ReplaceOne(filter, recipe);
+            await recipesCollection.ReplaceOneAsync(filter, recipe);
+        }
+
+        public async Task DeleteRecipeAsync(Guid id)
+        {
+            var filter = filterBuilder.Eq(r => r.Id, id);
+            await recipesCollection.DeleteOneAsync(filter);
         }
     }
 }

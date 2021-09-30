@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Linq;
 using Brewlog.Entities;
 
@@ -85,31 +86,35 @@ namespace Brewlog.Repositories
             },
         };
 
-        public IEnumerable<Recipe> GetRecipes()
+        public async Task<IEnumerable<Recipe>> GetRecipesAsync()
         {
-            return _recipes;
+            return await Task.FromResult(_recipes);
         }
 
-        public Recipe GetRecipe(Guid id)
+        public async Task<Recipe> GetRecipeAsync(Guid id)
         {
-            return _recipes.FirstOrDefault(r => r.Id == id);
+            var recipe = _recipes.FirstOrDefault(r => r.Id == id);
+            return await Task.FromResult(recipe);
         }
 
-        public void CreateRecipe(Recipe recipe)
+        public async Task CreateRecipeAsync(Recipe recipe)
         {
             _recipes.Add(recipe);
+            await Task.CompletedTask;
         }
 
-        public void UpdateRecipe(Recipe recipe)
+        public async Task UpdateRecipeAsync(Recipe recipe)
         {
             var index = _recipes.FindIndex(existingRecipe => existingRecipe.Id == recipe.Id);
             _recipes[index] = recipe;
+            await Task.CompletedTask;
         }
 
-        public void DeleteRecipe(Guid id)
+        public async Task DeleteRecipeAsync(Guid id)
         {
             var index = _recipes.FindIndex(existingRecipe => existingRecipe.Id == id);
             _recipes.RemoveAt(index);
+            await Task.CompletedTask;
         }
     }
 }

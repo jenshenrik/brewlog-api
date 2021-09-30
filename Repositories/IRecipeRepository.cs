@@ -1,15 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Brewlog.Entities;
 
 namespace Brewlog.Repositories
 {
     public interface IRecipeRepository
     {
-        IEnumerable<Recipe> GetRecipes();
-        Recipe GetRecipe(Guid id);
-        void CreateRecipe(Recipe recipe);
-        void UpdateRecipe(Recipe recipe);
-        void DeleteRecipe(Guid id);
+        Task<IEnumerable<Recipe>> GetRecipesAsync();
+        Task<Recipe> GetRecipeAsync(Guid id);
+        Task CreateRecipeAsync(Recipe recipe);
+        Task UpdateRecipeAsync(Recipe recipe);
+        Task DeleteRecipeAsync(Guid id);
     }
 }

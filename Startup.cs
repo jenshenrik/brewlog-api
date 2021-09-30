@@ -11,6 +11,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using MongoDB.Driver;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
+using Brewlog.Settings;
 
 using Brewlog.Repositories;
 using MongoDB.Driver;
@@ -42,9 +47,13 @@ namespace Brewlog
                 return new MongoClient(settings.ConnectionString);
             });
 
-            services.AddSingleton<IRecipeRepository, MongoDbRecipeRepository>();
+            // services.AddSingleton<IRecipeRepository, MongoDbRecipeRepository>();
+            services.AddSingleton<IRecipeRepository, InMemRecipeRepository>();
 
-            services.AddControllers();
+            services.AddControllers(options =>
+            {
+                options.SuppressAsyncSuffixInActionNames = false;
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "brewlog_api", Version = "v1" });
