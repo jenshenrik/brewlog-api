@@ -11,6 +11,7 @@ using MongoDB.Bson.Serialization.Serializers;
 using Brewlog.Settings;
 
 using Brewlog.Repositories;
+using System;
 
 namespace Brewlog
 {
@@ -29,14 +30,14 @@ namespace Brewlog
             BsonSerializer.RegisterSerializer(new GuidSerializer(BsonType.String));
             BsonSerializer.RegisterSerializer(new DateTimeOffsetSerializer(BsonType.String));
 
+            // var mongoDbSettings = Configuration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>();
+            var connectionString = Configuration.GetConnectionString("MongoDbConnectionString");
             services.AddSingleton<IMongoClient>(serviceProvider => 
             {
-                var settings = Configuration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>();
-                return new MongoClient(settings.ConnectionString);
+                return new MongoClient(connectionString);
             });
-
-            // services.AddSingleton<IRecipeRepository, MongoDbRecipeRepository>();
-            services.AddSingleton<IRecipeRepository, InMemRecipeRepository>();
+            services.AddSingleton<IRecipeRepository, MongoDbRecipeRepository>();
+            // services.AddSingleton<IRecipeRepository, InMemRecipeRepository>();
 
             services.AddControllers(options =>
             {
