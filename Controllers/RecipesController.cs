@@ -109,5 +109,13 @@ namespace Brewlog.Controllers
             await _recipeRepository.DeleteRecipeAsync(id);
             return NoContent();
         }
+
+        [HttpGet("test")]
+        public string TestEnvVariables()
+        {
+            var username = Environment.GetEnvironmentVariable("mongodbusername");
+            if (!String.IsNullOrEmpty(username)) return username;
+            return "var not set";
+        }
     }
 }
