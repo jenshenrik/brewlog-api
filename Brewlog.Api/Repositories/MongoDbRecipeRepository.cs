@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Brewlog.Entities;
+using Brewlog.Api.Entities;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
-namespace Brewlog.Repositories
+namespace Brewlog.Api.Repositories
 {
     public class MongoDbRecipeRepository : IRecipeRepository
     {

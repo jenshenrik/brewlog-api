@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Brewlog.Entities;
+using Brewlog.Api.Entities;
 
-namespace Brewlog.Repositories
+namespace Brewlog.Api.Repositories
 {
     public interface IRecipeRepository
     {

@@ -1,12 +1,11 @@
 using System;
 
-namespace Brewlog.DTOs
+namespace Brewlog.Api.Entities
 {
-    public record HopAdditionDTO
+    public record Fermentable
     {
         public Guid Id { get; init; }
         public string Name { get; init; }
         public double WeightInGrams { get; init; }
-        public int MinutesInBoil { get; init; }
     }
 }

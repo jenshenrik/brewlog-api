@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 
-namespace Brewlog.DTOs
+namespace Brewlog.Api.Entities
 {
-    public record RecipeDTO
+    public record Recipe
     {
         public Guid Id { get; init; }
         public string Name { get; init; }
@@ -12,8 +12,8 @@ namespace Brewlog.DTOs
         public decimal ABV { get; init; }
         public int EBC { get; init; }
         public int IBU { get; init; }
-        public IEnumerable<FermentableDTO> Fermentables { get; init; }
-        public IEnumerable<HopAdditionDTO> HopAdditions { get; init; }
+        public IEnumerable<Fermentable> Fermentables { get; init; }
+        public IEnumerable<HopAddition> HopAdditions { get; init; }
         public string Yeast { get; init; }
         public DateTimeOffset CreatedDate { get; init; }
     }

@@ -1,8 +1,8 @@
 using System.Linq;
-using Brewlog.Entities;
-using Brewlog.DTOs;
+using Brewlog.Api.Entities;
+using Brewlog.Api.DTOs;
 
-namespace Brewlog
+namespace Brewlog.Api
 {
     public static class Extensions
     {

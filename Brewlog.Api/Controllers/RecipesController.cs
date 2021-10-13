@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
-using Brewlog.DTOs;
-using Brewlog.Entities;
-using Brewlog.Repositories;
+using Brewlog.Api.DTOs;
+using Brewlog.Api.Entities;
+using Brewlog.Api.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Brewlog.Controllers
+namespace Brewlog.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]

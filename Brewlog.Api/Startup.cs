@@ -10,14 +10,14 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
-using Brewlog.Repositories;
+using Brewlog.Api.Repositories;
 using System;
 using System.Text.Json;
 using System.Linq;
 using System.Net.Mime;
 using Microsoft.AspNetCore.Http;
 
-namespace Brewlog
+namespace Brewlog.Api
 {
     public class Startup
     {

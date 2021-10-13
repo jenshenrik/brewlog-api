@@ -1,6 +1,6 @@
 using System;
 
-namespace Brewlog.DTOs
+namespace Brewlog.Api.DTOs
 {
     public record FermentableDTO
     {

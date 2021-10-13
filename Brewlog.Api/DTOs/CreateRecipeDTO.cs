@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Brewlog.DTOs
+namespace Brewlog.Api.DTOs
 {
-    public record UpdateRecipeDTO
+    public record CreateRecipeDTO
     {
         [Required]
         public string Name { get; init; }
@@ -17,7 +17,7 @@ namespace Brewlog.DTOs
         public int IBU { get; init; }
         [Required]
         public string Yeast { get; init; } 
-        public IEnumerable<UpdateFermentableDTO> Fermentables { get; init; }
-        public IEnumerable<UpdateHopAdditionDTO> HopAdditions { get; init; }
+        public IEnumerable<CreateFermentableDTO> Fermentables { get; init; }
+        public IEnumerable<CreateHopAdditionDTO> HopAdditions { get; init; }
     }
 }

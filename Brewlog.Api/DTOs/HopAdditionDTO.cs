@@ -1,8 +1,8 @@
 using System;
 
-namespace Brewlog.Entities
+namespace Brewlog.Api.DTOs
 {
-    public record HopAddition
+    public record HopAdditionDTO
     {
         public Guid Id { get; init; }
         public string Name { get; init; }
