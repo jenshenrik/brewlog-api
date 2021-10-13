@@ -15,3 +15,4 @@ namespace Brewlog.Controllers
             return "var not set";
         }
     }
+}
