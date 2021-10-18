@@ -57,7 +57,7 @@ namespace Brewlog.Controllers
                 HopAdditions = recipeDto.HopAdditions.Select(
                     h => new HopAddition { Id = Guid.NewGuid(), Name = h.Name, WeightInGrams = h.WeightInGrams, MinutesInBoil = h.MinutesInBoil }
                 ),
-                CreatedDate = DateTimeOffset.UtcNow()
+                CreatedDate = DateTimeOffset.UtcNow
             };
 
             await _recipeRepository.CreateRecipeAsync(recipe);
