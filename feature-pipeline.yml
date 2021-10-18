@@ -33,3 +33,16 @@ steps:
       scannerMode: 'MSBuild'
       projectKey: 'jenshenrik_brewlog-api'
       projectName: 'brewlog-api'
+
+  # Rebuild in 3.1 for Sonar
+  - task: DotNetCoreCLI@2
+    displayName: 'Rebuild for Sonar'
+    inputs:
+      command: 'build'
+      projects: '**/*.csproj'
+
+  - task: SonarCloudAnalyze@1
+
+  - task: SonarCloudPublish@1
+    inputs:
+      pollingTimeoutSec: '300'
