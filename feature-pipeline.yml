@@ -1,0 +1,21 @@
+pool:
+  vmImage: ubuntu-latest
+
+trigger:
+  branches:
+    include:
+      - '*'
+    exclude:
+      - main
+
+steps:
+  - task: UseDotNet@2
+    inputs:
+      version: '5.0.x'
+      includePreviewVersions: true
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Build project'
+    inputs:
+      command: 'build'
+      projects: '**/*.csproj'
