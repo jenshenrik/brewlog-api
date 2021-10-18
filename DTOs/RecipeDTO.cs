@@ -16,5 +16,7 @@ namespace Brewlog.DTOs
         public IEnumerable<HopAdditionDTO> HopAdditions { get; init; }
         public string Yeast { get; init; }
         public DateTimeOffset CreatedDate { get; init; }
+        public WaterProfileDTO WaterProfile { get; init; }
+        public decimal MashPh { get; init; }
     }
 }

@@ -19,5 +19,7 @@ namespace Brewlog.DTOs
         public string Yeast { get; init; } 
         public IEnumerable<UpdateFermentableDTO> Fermentables { get; init; }
         public IEnumerable<UpdateHopAdditionDTO> HopAdditions { get; init; }
+        public WaterProfileDTO WaterProfile { get; init; }
+        public decimal MashPh { get; init; }
     }
 }

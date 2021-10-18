@@ -16,5 +16,7 @@ namespace Brewlog.Entities
         public IEnumerable<HopAddition> HopAdditions { get; init; }
         public string Yeast { get; init; }
         public DateTimeOffset CreatedDate { get; init; }
+        public WaterProfile WaterProfile { get; init; }
+        public decimal MashPh { get; init; }
     }
 }
