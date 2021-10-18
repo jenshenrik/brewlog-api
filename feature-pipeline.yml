@@ -20,6 +20,12 @@ steps:
       command: 'build'
       projects: '**/*.csproj'
 
+  # https://community.sonarsource.com/t/sonarcloud-prepare-fails-for-net-5-project/45526
+  - task: UseDotNet@2
+    inputs:
+      version: '3.1.x'
+      includePreviewVersions: true # Required for preview versions
+
   - task: SonarCloudPrepare@1
     inputs:
       SonarCloud: 'Sonarcloud'
