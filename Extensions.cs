@@ -19,7 +19,9 @@ namespace Brewlog
                 Yeast = recipe.Yeast,
                 Fermentables = recipe.Fermentables.Select(f => f.AsDTO()),
                 HopAdditions = recipe.HopAdditions.Select(h => h.AsDTO()),
-                CreatedDate = recipe.CreatedDate 
+                CreatedDate = recipe.CreatedDate ,
+                WaterProfile = recipe.WaterProfile?.AsDTO(),
+                MashPh = recipe.MashPh
             };
         }
 
@@ -31,6 +33,32 @@ namespace Brewlog
         public static HopAdditionDTO AsDTO(this HopAddition hops)
         {
             return new HopAdditionDTO { Id = hops.Id, Name = hops.Name, WeightInGrams = hops.WeightInGrams, MinutesInBoil = hops.MinutesInBoil };
+        }
+
+        public static WaterProfileDTO AsDTO(this WaterProfile water)
+        {
+            return new WaterProfileDTO
+            {
+                Ca = water.Ca,
+                Mg = water.Mg,
+                Na = water.Na,
+                Cl = water.Cl,
+                SO4 = water.SO4,
+                HCO3 = water.HCO3
+            };
+        }
+
+        public static WaterProfile FromDTO(this WaterProfileDTO water)
+        {
+            return new WaterProfile
+            {
+                Ca = water.Ca,
+                Mg = water.Mg,
+                Na = water.Na,
+                Cl = water.Cl,
+                SO4 = water.SO4,
+                HCO3 = water.HCO3
+            };
         }
     }
 }

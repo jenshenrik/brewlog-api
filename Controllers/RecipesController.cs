@@ -57,7 +57,9 @@ namespace Brewlog.Controllers
                 HopAdditions = recipeDto.HopAdditions.Select(
                     h => new HopAddition { Id = Guid.NewGuid(), Name = h.Name, WeightInGrams = h.WeightInGrams, MinutesInBoil = h.MinutesInBoil }
                 ),
-                CreatedDate = DateTimeOffset.UtcNow
+                CreatedDate = DateTimeOffset.UtcNow,
+                WaterProfile = recipeDto.WaterProfile?.FromDTO(),
+                MashPh = recipeDto.MashPh
             };
 
             await _recipeRepository.CreateRecipeAsync(recipe);
@@ -88,7 +90,9 @@ namespace Brewlog.Controllers
                 HopAdditions = recipeDto.HopAdditions.Select(
                     h => new HopAddition { Id = Guid.NewGuid(), Name = h.Name, WeightInGrams = h.WeightInGrams, MinutesInBoil = h.MinutesInBoil }
                 ),
-                CreatedDate = DateTimeOffset.UtcNow
+                WaterProfile = recipeDto.WaterProfile?.FromDTO(),
+                CreatedDate = DateTimeOffset.UtcNow,
+                MashPh = recipeDto.MashPh
             };
 
             await _recipeRepository.UpdateRecipeAsync(updateRecipe);
@@ -109,6 +113,5 @@ namespace Brewlog.Controllers
             await _recipeRepository.DeleteRecipeAsync(id);
             return NoContent();
         }
-
     }
 }
