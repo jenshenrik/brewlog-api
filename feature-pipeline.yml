@@ -20,10 +20,29 @@ steps:
       command: 'build'
       projects: '**/*.csproj'
 
+  # https://community.sonarsource.com/t/sonarcloud-prepare-fails-for-net-5-project/45526
+  - task: UseDotNet@2
+    inputs:
+      version: '3.1.x'
+
   - task: SonarCloudPrepare@1
     inputs:
       SonarCloud: 'Sonarcloud'
       organization: 'jenshenrik'
       scannerMode: 'MSBuild'
       projectKey: 'jenshenrik_brewlog-api'
+      projectName: 'brewlog-api'
+
+  # Rebuild in 3.1 for Sonar
+  - task: DotNetCoreCLI@2
+    displayName: 'Rebuild for Sonar'
+    inputs:
+      command: 'build'
+      projects: '**/*.csproj'
+
+  - task: SonarCloudAnalyze@1
+
+  - task: SonarCloudPublish@1
+    inputs:
+      pollingTimeoutSec: '300'
       projectName: 'brewlog-api'

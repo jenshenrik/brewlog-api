@@ -69,7 +69,11 @@ namespace Brewlog
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "brewlog_api v1"));
             }
 
-            app.UseHttpsRedirection();
+            if (env.IsDevelopment()) 
+            {
+                app.UseHttpsRedirection();
+            }
+
             app.UseRouting();
             app.UseAuthorization();
 
