@@ -19,3 +19,11 @@ steps:
     inputs:
       command: 'build'
       projects: '**/*.csproj'
+
+  - task: SonarCloudPrepare@1
+    inputs:
+      SonarCloud: 'Sonarcloud'
+      organization: 'jenshenrik'
+      scannerMode: 'MSBuild'
+      projectKey: 'jenshenrik_brewlog-api'
+      projectName: 'brewlog-api'
