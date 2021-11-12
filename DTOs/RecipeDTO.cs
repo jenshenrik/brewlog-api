@@ -18,5 +18,6 @@ namespace Brewlog.DTOs
         public DateTimeOffset CreatedDate { get; init; }
         public WaterProfileDTO WaterProfile { get; init; }
         public decimal MashPh { get; init; }
+        public IEnumerable<BatchDTO> Batches { get; init; }
     }
 }

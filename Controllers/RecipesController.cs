@@ -14,10 +14,13 @@ namespace Brewlog.Controllers
     public class RecipesController : ControllerBase
     {
         private readonly IRecipeRepository _recipeRepository;
+        private readonly IBatchRepository _batchRepository;
 
-        public RecipesController(IRecipeRepository recipeRepository)
+        public RecipesController(IRecipeRepository recipeRepository, 
+                                 IBatchRepository batchRepository)
         {
             _recipeRepository = recipeRepository;
+            _batchRepository = batchRepository;
         }
 
         [HttpGet]
@@ -32,11 +35,15 @@ namespace Brewlog.Controllers
         public async Task<ActionResult<RecipeDTO>> GetRecipeAsync(Guid id)
         {
             var recipe = await _recipeRepository.GetRecipeAsync(id);
-            if (recipe is null)
-            {
-                return NotFound();
-            }
-            return Ok(recipe.AsDTO());
+            if (recipe is null) return NotFound();
+
+            var dto =  recipe.AsDTO() with 
+            { 
+                Batches = (IEnumerable<BatchDTO>)(await _batchRepository
+                    .GetBatchesForRecipeAsync(id))
+                    .Select(b => b.AsDTO())
+            };
+            return Ok(dto);
         }
 
         [HttpPost]
@@ -112,6 +119,47 @@ namespace Brewlog.Controllers
 
             await _recipeRepository.DeleteRecipeAsync(id);
             return NoContent();
+        }
+
+        [HttpGet("{recipeId}/batch/{batchNumber}")]
+        public async Task<ActionResult<Batch>> GetBatchAsync(Guid recipeId, int batchNumber)
+        {
+            var batch = await _batchRepository.GetBatchAsync(recipeId, batchNumber);
+            if (batch is null)
+            {
+                return NoContent();
+            }
+
+            return Ok(batch);
+        }
+
+        [HttpPost("{recipeId}/batch")]
+        public async Task<ActionResult<BatchDTO>> CreateBatchAsync(Guid recipeId, CreateBatchDTO batchDto)
+        {
+            Batch batch = new()
+            {
+                RecipeId = recipeId,
+                Number = await _batchRepository.GetNextBatchNumber(recipeId),
+                Notes = batchDto.Notes,
+                BoilGravity = batchDto.BoilGravity,
+                FinalGravity = batchDto.FinalGravity,
+                OriginalGravity = batchDto.OriginalGravity,
+                BrewDate = batchDto.BrewDate
+            };
+
+            BatchDTO createdDto = new()
+            {
+                RecipeId = batch.RecipeId,
+                Number = batch.Number,
+                BoilGravity = batch.BoilGravity,
+                OriginalGravity = batch.OriginalGravity,
+                FinalGravity = batch.FinalGravity,
+                Notes = batch.Notes,
+                BrewDate = batch.BrewDate
+            };
+            
+            await _batchRepository.CreateBatchAsync(batch);
+            return CreatedAtAction(nameof(GetBatchAsync), new { recipeId = batch.RecipeId, batchNumber = batch.Number}, createdDto);
         }
     }
 }
