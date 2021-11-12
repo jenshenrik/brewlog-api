@@ -56,6 +56,8 @@ namespace Brewlog.Repositories
         public async Task<int> GetNextBatchNumber(Guid recipeId)
         {
             var batches = await GetBatchesForRecipeAsync(recipeId);
+            if (batches.Count() == 0) return 1;
+
             var latestBatch = batches.Max(b => b.Number);
             return await Task.FromResult(latestBatch + 1);
         }

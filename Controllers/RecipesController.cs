@@ -111,11 +111,7 @@ namespace Brewlog.Controllers
         public async Task<ActionResult> DeleteRecipe(Guid id)
         {
             var recipe = await _recipeRepository.GetRecipeAsync(id);
-
-            if (recipe is null)
-            {
-                return NotFound();
-            }
+            if (recipe is null)  return NotFound();
 
             await _recipeRepository.DeleteRecipeAsync(id);
             return NoContent();
@@ -136,6 +132,9 @@ namespace Brewlog.Controllers
         [HttpPost("{recipeId}/batch")]
         public async Task<ActionResult<BatchDTO>> CreateBatchAsync(Guid recipeId, CreateBatchDTO batchDto)
         {
+            var recipe = await _recipeRepository.GetRecipeAsync(recipeId);
+            if (recipe is null) return NotFound();
+            
             Batch batch = new()
             {
                 RecipeId = recipeId,
@@ -160,6 +159,17 @@ namespace Brewlog.Controllers
             
             await _batchRepository.CreateBatchAsync(batch);
             return CreatedAtAction(nameof(GetBatchAsync), new { recipeId = batch.RecipeId, batchNumber = batch.Number}, createdDto);
+        }
+
+        
+        [HttpDelete("{recipeId}/batch/{batchNumber}")]
+        public async Task<ActionResult> DeleteBatchAsync(Guid recipeId, int batchNumber)
+        {
+            var batch = await _batchRepository.GetBatchAsync(recipeId, batchNumber);
+            if (batch is null) return NotFound();
+
+            await _batchRepository.DeleteBatchAsync(recipeId, batchNumber);
+            return NoContent();
         }
     }
 }
