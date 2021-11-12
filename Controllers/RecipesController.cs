@@ -14,10 +14,13 @@ namespace Brewlog.Controllers
     public class RecipesController : ControllerBase
     {
         private readonly IRecipeRepository _recipeRepository;
+        private readonly IBatchRepository _batchRepository;
 
-        public RecipesController(IRecipeRepository recipeRepository)
+        public RecipesController(IRecipeRepository recipeRepository, 
+                                 IBatchRepository batchRepository)
         {
             _recipeRepository = recipeRepository;
+            _batchRepository = batchRepository;
         }
 
         [HttpGet]
@@ -32,11 +35,15 @@ namespace Brewlog.Controllers
         public async Task<ActionResult<RecipeDTO>> GetRecipeAsync(Guid id)
         {
             var recipe = await _recipeRepository.GetRecipeAsync(id);
-            if (recipe is null)
-            {
-                return NotFound();
-            }
-            return Ok(recipe.AsDTO());
+            if (recipe is null) return NotFound();
+
+            var dto =  recipe.AsDTO() with 
+            { 
+                Batches = (IEnumerable<BatchDTO>)(await _batchRepository
+                    .GetBatchesForRecipeAsync(id))
+                    .Select(b => b.AsDTO())
+            };
+            return Ok(dto);
         }
 
         [HttpPost]
@@ -104,13 +111,86 @@ namespace Brewlog.Controllers
         public async Task<ActionResult> DeleteRecipe(Guid id)
         {
             var recipe = await _recipeRepository.GetRecipeAsync(id);
+            if (recipe is null)  return NotFound();
 
-            if (recipe is null)
+            await _recipeRepository.DeleteRecipeAsync(id);
+            return NoContent();
+        }
+
+        [HttpGet("{recipeId}/batch/{batchNumber}")]
+        public async Task<ActionResult<Batch>> GetBatchAsync(Guid recipeId, int batchNumber)
+        {
+            var batch = await _batchRepository.GetBatchAsync(recipeId, batchNumber);
+            if (batch is null)
+            {
+                return NoContent();
+            }
+
+            return Ok(batch);
+        }
+
+        [HttpPost("{recipeId}/batch")]
+        public async Task<ActionResult<BatchDTO>> CreateBatchAsync(Guid recipeId, CreateBatchDTO batchDto)
+        {
+            var recipe = await _recipeRepository.GetRecipeAsync(recipeId);
+            if (recipe is null) return NotFound();
+
+            Batch batch = new()
+            {
+                RecipeId = recipeId,
+                Number = await _batchRepository.GetNextBatchNumber(recipeId),
+                Notes = batchDto.Notes,
+                BoilGravity = batchDto.BoilGravity,
+                FinalGravity = batchDto.FinalGravity,
+                OriginalGravity = batchDto.OriginalGravity,
+                BrewDate = batchDto.BrewDate
+            };
+
+            BatchDTO createdDto = new()
+            {
+                RecipeId = batch.RecipeId,
+                Number = batch.Number,
+                BoilGravity = batch.BoilGravity,
+                OriginalGravity = batch.OriginalGravity,
+                FinalGravity = batch.FinalGravity,
+                Notes = batch.Notes,
+                BrewDate = batch.BrewDate
+            };
+            
+            await _batchRepository.CreateBatchAsync(batch);
+            return CreatedAtAction(nameof(GetBatchAsync), new { recipeId = batch.RecipeId, batchNumber = batch.Number}, createdDto);
+        }
+
+        [HttpPut("{recipeId}/batch/{batchNumber}")]
+        public async Task<ActionResult> UpdateBatchAsync(Guid recipeId, int batchNumber, UpdateBatchDTO batchDto)
+        {
+            var existingBatch = await _batchRepository.GetBatchAsync(recipeId, batchNumber);
+
+            if (existingBatch is null)
             {
                 return NotFound();
             }
 
-            await _recipeRepository.DeleteRecipeAsync(id);
+            Batch updateBatch = existingBatch with {
+                BoilGravity = batchDto.BoilGravity,
+                BrewDate = batchDto.BrewDate,
+                FinalGravity = batchDto.FinalGravity,
+                Notes = batchDto.Notes,
+                OriginalGravity = batchDto.OriginalGravity
+            };
+
+            await _batchRepository.UpdateBatchAsync(updateBatch);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{recipeId}/batch/{batchNumber}")]
+        public async Task<ActionResult> DeleteBatchAsync(Guid recipeId, int batchNumber)
+        {
+            var batch = await _batchRepository.GetBatchAsync(recipeId, batchNumber);
+            if (batch is null) return NotFound();
+
+            await _batchRepository.DeleteBatchAsync(recipeId, batchNumber);
             return NoContent();
         }
     }

@@ -40,6 +40,7 @@ namespace Brewlog
                 return new MongoClient(connectionString);
             });
             services.AddSingleton<IRecipeRepository, MongoDbRecipeRepository>();
+            services.AddSingleton<IBatchRepository, MongoDbBatchRepository>();
 
             services.AddControllers(options =>
             {

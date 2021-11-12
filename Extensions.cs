@@ -60,5 +60,19 @@ namespace Brewlog
                 HCO3 = water.HCO3
             };
         }
+
+        public static BatchDTO AsDTO(this Batch b)
+        {
+            return new BatchDTO
+            {
+                BoilGravity = b.BoilGravity,
+                BrewDate = b.BrewDate,
+                FinalGravity = b.FinalGravity,
+                Notes = b.Notes,
+                Number = b.Number,
+                OriginalGravity = b.OriginalGravity,
+                RecipeId = b.RecipeId
+            };
+        }
     }
 }
