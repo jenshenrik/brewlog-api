@@ -76,6 +76,12 @@ namespace Brewlog
             }
 
             app.UseRouting();
+            app.UseCors(x => x
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .SetIsOriginAllowed(origin => true)
+                .AllowCredentials());
+                
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
