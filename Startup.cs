@@ -16,6 +16,7 @@ using System.Text.Json;
 using System.Linq;
 using System.Net.Mime;
 using Microsoft.AspNetCore.Http;
+using Brewlog.Services;
 
 namespace Brewlog
 {
@@ -40,6 +41,7 @@ namespace Brewlog
                 return new MongoClient(connectionString);
             });
             services.AddSingleton<IRecipeRepository, MongoDbRecipeRepository>();
+            services.AddSingleton<IRecipeService, RecipeService>();
             services.AddSingleton<IBatchRepository, MongoDbBatchRepository>();
 
             services.AddControllers(options =>

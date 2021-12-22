@@ -7,6 +7,7 @@ using Brewlog.DTOs;
 using Brewlog.Entities;
 using Brewlog.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Brewlog.Services;
 
 namespace Brewlog.Controllers
 {
@@ -16,35 +17,30 @@ namespace Brewlog.Controllers
     {
         private readonly IRecipeRepository _recipeRepository;
         private readonly IBatchRepository _batchRepository;
+        private readonly IRecipeService _recipeService;
 
         public RecipesController(IRecipeRepository recipeRepository, 
-                                 IBatchRepository batchRepository)
+                                 IBatchRepository batchRepository,
+                                 IRecipeService recipeService)
         {
             _recipeRepository = recipeRepository;
+            _recipeService = recipeService;
             _batchRepository = batchRepository;
         }
 
         [HttpGet]
-        public async Task<IEnumerable<RecipeDTO>> GetRecipesAsync()
+        public async Task<IEnumerable<RecipeListElement>> GetRecipesAsync()
         {
-            var recipes = (await _recipeRepository.GetRecipesAsync())
-                .Select(recipe => recipe.AsDTO());
-            return recipes;
+            return await _recipeService.GetAllRecipesAsync();
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<RecipeDTO>> GetRecipeAsync(Guid id)
         {
-            var recipe = await _recipeRepository.GetRecipeAsync(id);
+            var recipe = await _recipeService.GetRecipeAsync(id);
             if (recipe is null) return NotFound();
 
-            var dto =  recipe.AsDTO() with 
-            { 
-                Batches = (IEnumerable<BatchDTO>)(await _batchRepository
-                    .GetBatchesForRecipeAsync(id))
-                    .Select(b => b.AsDTO())
-            };
-            return Ok(dto);
+            return Ok(recipe);
         }
 
         [HttpPost]
