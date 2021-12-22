@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
+using Brewlog.DTOs.Recipe;
 using Brewlog.DTOs;
 using Brewlog.Entities;
 using Brewlog.Repositories;

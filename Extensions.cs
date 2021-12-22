@@ -1,6 +1,7 @@
 using System.Linq;
 using Brewlog.Entities;
 using Brewlog.DTOs;
+using Brewlog.DTOs.Recipe;
 
 namespace Brewlog
 {

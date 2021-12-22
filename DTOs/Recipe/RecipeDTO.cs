@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Brewlog.DTOs
+namespace Brewlog.DTOs.Recipe
 {
     public record RecipeDTO
     {
