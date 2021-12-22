@@ -7,6 +7,7 @@ namespace Brewlog.DTOs.Recipe
     {
         [Required]
         public string Name { get; init; }
+        public string Style { get; init; }
         [Required]
         [Range(1, 2)]
         public decimal OriginalGravity { get; init; }

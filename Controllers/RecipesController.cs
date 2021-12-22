@@ -50,6 +50,7 @@ namespace Brewlog.Controllers
             {
                 Id = Guid.NewGuid(),
                 Name = recipeDto.Name,
+                Style = recipeDto.Style,
                 OriginalGravity = recipeDto.OriginalGravity,
                 FinalGravity = recipeDto.FinalGravity,
                 IBU = recipeDto.IBU,
@@ -83,6 +84,7 @@ namespace Brewlog.Controllers
 
             Recipe updateRecipe = existingRecipe with {
                 Name = recipeDto.Name,
+                Style = recipeDto.Style,
                 OriginalGravity = recipeDto.OriginalGravity,
                 FinalGravity = recipeDto.FinalGravity,
                 IBU = recipeDto.IBU,

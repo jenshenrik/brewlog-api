@@ -13,6 +13,7 @@ namespace Brewlog
             { 
                 Id = recipe.Id, 
                 Name = recipe.Name, 
+                Style = recipe.Style, 
                 OriginalGravity = recipe.OriginalGravity, 
                 FinalGravity = recipe.FinalGravity,
                 IBU = recipe.IBU,

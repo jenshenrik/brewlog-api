@@ -23,7 +23,7 @@ namespace Brewlog.Services
             {
                 Id = r.Id,
                 Name = r.Name,
-                Style = "To be implemented",
+                Style = r.Style,
                 ABV = r.ABV
             });
         }
