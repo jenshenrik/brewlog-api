@@ -9,6 +9,10 @@ namespace Brewlog.Entities
         public int Number { get; init; }
         public Guid RecipeId { get; init; }
         public string Notes { get; init; }
+        public decimal? BatchSize { get; init; }
+        public decimal? PreboilVolume { get; init; }
+        public decimal? MashVolume { get; init; }
+        public decimal? SpargeVolume { get; init; }
         public decimal? OriginalGravity { get; init; }
         public decimal? BoilGravity { get; init; }
         public decimal? FinalGravity { get; init; }

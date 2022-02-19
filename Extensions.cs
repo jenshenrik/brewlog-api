@@ -29,7 +29,7 @@ namespace Brewlog
 
         public static FermentableDTO AsDTO(this Fermentable fermentable)
         {
-            return new FermentableDTO { Id = fermentable.Id, Name = fermentable.Name, WeightInGrams = fermentable.WeightInGrams};
+            return new FermentableDTO { Id = fermentable.Id, Name = fermentable.Name, WeightInGrams = fermentable.WeightInGrams, Percent = fermentable.Percent };
         }
 
         public static HopAdditionDTO AsDTO(this HopAddition hops)

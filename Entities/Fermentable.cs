@@ -7,5 +7,6 @@ namespace Brewlog.Entities
         public Guid Id { get; init; }
         public string Name { get; init; }
         public double WeightInGrams { get; init; }
+        public double Percent { get; init; }
     }
 }
