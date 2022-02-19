@@ -34,7 +34,7 @@ namespace Brewlog
 
         public static HopAdditionDTO AsDTO(this HopAddition hops)
         {
-            return new HopAdditionDTO { Id = hops.Id, Name = hops.Name, WeightInGrams = hops.WeightInGrams, MinutesInBoil = hops.MinutesInBoil };
+            return new HopAdditionDTO { Id = hops.Id, Name = hops.Name, WeightInGrams = hops.WeightInGrams, MinutesInBoil = hops.MinutesInBoil, Duration = hops.Duration, IBUs = hops.IBUs, Type = hops.Type };
         }
 
         public static WaterProfileDTO AsDTO(this WaterProfile water)

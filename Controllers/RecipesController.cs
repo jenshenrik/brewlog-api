@@ -59,8 +59,8 @@ namespace Brewlog.Controllers
                 Fermentables = recipeDto.Fermentables.Select(
                     f => new Fermentable { Id = Guid.NewGuid(), Name = f.Name, WeightInGrams = f.WeightInGrams, Percent = f.Percent }
                 ),
-                HopAdditions = recipeDto.HopAdditions.Select(
-                    h => new HopAddition { Id = Guid.NewGuid(), Name = h.Name, WeightInGrams = h.WeightInGrams, MinutesInBoil = h.MinutesInBoil }
+                HopAdditions = (IEnumerable<HopAddition>)recipeDto.HopAdditions.Select(
+                    h => new HopAddition { Id = Guid.NewGuid(), Name = h.Name, WeightInGrams = h.WeightInGrams, MinutesInBoil = h.MinutesInBoil, Duration = h.Duration, IBUs = h.IBUs, Type = h.Type }
                 ),
                 CreatedDate = DateTimeOffset.UtcNow,
                 WaterProfile = recipeDto.WaterProfile?.FromDTO(),
